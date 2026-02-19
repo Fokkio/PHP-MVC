@@ -4,16 +4,16 @@
         public string $name;
         public string $email;
         public string $password;
-        public int $age;
+        public string $birthday;
         public string $phone;
         public Gender $gender;
 
-        public function __construct($name, $email, $password, $age, $phone, $gender)
+        public function __construct($name, $email, $password, $birthday, $phone, $gender)
         {
             $this->name = $name;
             $this->email = $email;
             $this->password = $password;
-            $this->age = $age;
+            $this->birthday = $birthday;
             $this->phone = $phone;
             $this->gender = $gender;
         }
@@ -24,7 +24,7 @@
                 'name' => $this->name,
                 'email' => $this->email,
                 'password' => $this->password,
-                'age' => $this->age,
+                'birthday' => $this->birthday,
                 'phone' => $this->phone,
                 'gender' => $this->gender->value
             ];
@@ -35,19 +35,19 @@
     {
         public string $name;
         public string $email;
-        public int $age;
+        public string $birthday;
         public string $phone;
         public Gender $gender;
         public function __construct(
             string $name,
             string $email,
-            int $age,
+            int $birthday,
             string $phone,
             Gender $gender
         )    {
             $this->name = $name;
             $this->email = $email;
-            $this->age = $age;
+            $this->birthday = $birthday;
             $this->phone = $phone;
             $this->gender = $gender;            
         }
@@ -57,7 +57,7 @@
             return [
                 'name' => $this->name,
                 'email' => $this->email,
-                'age' => $this->age,
+                'birthday' => $this->birthday,
                 'phone' => $this->phone,            
                 'gender' => $this->gender->value
             ];  

@@ -121,7 +121,7 @@
                 return $events;
         }
 
-        public function updateEvent($eventId, EventDTO $event)
+        public function updateEvent($eventId, UpdateEventDTO $event)
         {
             $fields = [];
             $params = [];

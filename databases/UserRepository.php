@@ -35,13 +35,13 @@ class UserRepository
 
     public function createUser(RegisterUserDTO $user)
     {
-        $sql = "INSERT INTO users (name, email, password, age, phone, gender) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (name, email, password, birthday, phone, gender) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("sssiss",
                             $user->name,
                             $user->email,
                             $user->password,
-                            $user->age,
+                            $user->birthday,
                             $user->phone,
                             $user->gender->value
                         );
@@ -49,7 +49,7 @@ class UserRepository
     }
 
     public function getUserProfileDetails($userId) {
-        $sql = "SELECT name, email, age, phone, gender FROM users WHERE id = ?";
+        $sql = "SELECT name, email, birthday, phone, gender FROM users WHERE id = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("i", $userId);
         $stmt->execute();

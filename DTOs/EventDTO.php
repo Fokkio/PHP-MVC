@@ -1,5 +1,5 @@
 <?php
-    class CreateEventDTO{
+    class CreateEventDTO{ //สำหรับรับข้อมูลที่ต้องการสร้าง event
         public string $name;
         public string $description;
         public string $event_start;
@@ -19,19 +19,9 @@
             $this->event_end = $event_end;
             $this->creator_id = $creator_id;
         }
-        public function toArray() : array
-        {
-            return [
-                'name' => $this->name,
-                'description' => $this->description,
-                'event_start' => $this->event_start,
-                'event_end' => $this->event_end,
-                'creator_id' => $this->creator_id
-            ];
-        }
     }
 
-    class EventDTO{
+    class EventDTO{ //สำหรับดึงข้อมูล event มาแสดง
         public int $id;
         public string $name;
         public string $description;
@@ -64,5 +54,24 @@
                 'event_end' => $this->event_end,
                 'creator_name' => $this->creator_name
             ];
+        }
+    }
+
+    class UpdateEventDTO{ //สำหรับรับข้อมูลที่ต้องการอัปเดต (ไม่จำเป็นต้องใส่ทุกฟิลด์)
+        public ?string $name;
+        public ?string $description;
+        public ?string $event_start;
+        public ?string $event_end;
+
+        public function __construct(
+            ?string $name = null,
+            ?string $description = null,
+            ?string $event_start = null,
+            ?string $event_end = null
+        ){
+            $this->name = $name;
+            $this->description = $description;
+            $this->event_start = $event_start;
+            $this->event_end = $event_end;
         }
     }
