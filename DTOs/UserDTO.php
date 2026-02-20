@@ -41,7 +41,7 @@
         public function __construct(
             string $name,
             string $email,
-            int $birthday,
+            string $birthday,
             string $phone,
             Gender $gender
         )    {

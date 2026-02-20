@@ -42,7 +42,7 @@
             header('Location: /events');
         }
 
-        public function goToEdit($id): void
+        public function showEdit($id , $user_id): void
         {
             $event = $this->eventRepo->getEventById($id);
             if (!$event) {
@@ -51,7 +51,16 @@
             renderView('edit-event', ['title' => 'Edit Event', 'event' => $event]);
         }
 
-        public function edit($id): void
+        public function goToEdit($id  , $user_id): void
+        {
+            $event = $this->eventRepo->getEventById($id);
+            if (!$event) {
+                notFound();
+            }
+            renderView('edit-event', ['title' => 'Edit Event', 'event' => $event]);
+        }
+
+        public function edit($id  , $user_id): void
         {
             // รับข้อมูลจากฟอร์มและสร้าง DTO
             $name = $_POST['name'] ?? '';

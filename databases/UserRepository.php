@@ -55,6 +55,14 @@ class UserRepository
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
     }
+
+    public function getUsernameById($userId) {
+        $sql = "SELECT name FROM users WHERE id = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc()['name'] ?? null;
+    }
 }
 
 

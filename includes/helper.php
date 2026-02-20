@@ -1,12 +1,8 @@
 <?php
-    function queryData(string $str , array $row): string{
-        $data = $row[$str] ?? 'Unknown';
-        return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
-    }
-
-    function logout(){
-        session_unset();
-        session_destroy();
-        header('Location: /');
-        exit;
+    function requireAuth(): void
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
+            exit;
+        }
     }

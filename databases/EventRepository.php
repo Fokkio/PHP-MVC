@@ -46,7 +46,8 @@
                    e.event_description AS description,
                    e.event_start,
                    e.event_end,
-                   u.name AS creator_name
+                   u.name AS creator_name,
+                   u.user_id AS creator_id
             FROM events e
             JOIN users u ON e.user_id = u.user_id
             WHERE e.event_id = ?";
@@ -55,13 +56,14 @@
             $stmt->execute();
             $row = $stmt->get_result()->fetch_assoc();
             if (!$row) return null;
-             return new EventDTO(
+             return new EventDetailDTO(
                 $row['id'],
                 $row['name'],
                 $row['description'],
                 $row['event_start'],
                 $row['event_end'],
-                $row['creator_name']
+                $row['creator_name'],
+                $row['creator_id']
             );
         }
 

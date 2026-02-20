@@ -57,6 +57,23 @@
         }
     }
 
+    class EventDetailDTO extends EventDTO{ //สำหรับดึงข้อมูล event มาแสดงแบบละเอียด (เช่น มี creator_id ด้วย)
+        public int $creator_id;
+
+        public function __construct(
+            int $id,
+            string $name,
+            string $description,
+            string $event_start,
+            string $event_end,
+            string $creator_name,
+            int $creator_id
+        ) {
+            parent::__construct($id, $name, $description, $event_start, $event_end, $creator_name);
+            $this->creator_id = $creator_id;
+        }
+    }
+
     class UpdateEventDTO{ //สำหรับรับข้อมูลที่ต้องการอัปเดต (ไม่จำเป็นต้องใส่ทุกฟิลด์)
         public ?string $name;
         public ?string $description;

@@ -10,7 +10,7 @@
 </p>
 
 <hr>
-
-<a href="/events/<?= $event->id ?>/edit">✏ Edit</a>
-|
+<?php if($_SESSION['user_id'] == $event->creator_id) : ?>
+    <a href="/events/<?= $event->creator_id ?>/edit">✏ Edit</a>
+<?php endif; ?>
 <a href="/events">⬅ Back to Events</a>

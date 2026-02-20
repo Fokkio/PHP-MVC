@@ -1,5 +1,5 @@
-<h1><?= htmlspecialchars($title) ?></h1>
-
+<?php include 'header.php' ?>
+<h3>Hello <?= htmlspecialchars($_SESSION['username'] ?? 'Guest') ?></h3>
 <a href="/events/create" style="display:inline-block;margin-bottom:15px;">
     ➕ Create Event
 </a>
@@ -20,8 +20,14 @@
                     <?= htmlspecialchars($event->event_start) ?> 
                     - 
                     <?= htmlspecialchars($event->event_end) ?>
+                    <div>
+                        Created by: <?= htmlspecialchars($event->creator_name) ?>
+                    </div>
                 </small>
+                
             </li>
         <?php endforeach; ?>
     </ul>
 <?php endif; ?>
+
+<?php include 'footer.php' ?>
