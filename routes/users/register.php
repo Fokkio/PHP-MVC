@@ -24,7 +24,7 @@ if ($context['method'] === 'GET') {
     }
     $gender = Gender::from($genderInput);
     createUser($name, $email, $password, $birthday, $phone, $gender);
-    header('Location: /login');
+    header('Location: /users/login');
 } else {
     notFound();
 }

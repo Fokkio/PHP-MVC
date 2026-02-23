@@ -1,87 +1,87 @@
 <?php
-    require_once INCLUDES_DIR . '/Enum.php';
-    function getUserById($userId)
-    {
-        global $connection;
-        $sql = "SELECT * FROM users WHERE user_id = ?";
-        $stmt = $connection->prepare($sql);
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
+require_once INCLUDES_DIR . '/Enum.php';
+function getUserById($userId)
+{
+    global $connection;
+    $sql = "SELECT * FROM users WHERE user_id = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+
+function checkLogin($email, $password)
+{
+    global $connection;
+    $sql = "SELECT * FROM users WHERE email = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user && password_verify($password, $user['password'])) {
+        return $user;
     }
+    return false;
+}
 
-    function checkLogin($email, $password)
-    {
-        global $connection;
-        $sql = "SELECT * FROM users WHERE email = ?";
-        $stmt = $connection->prepare($sql);
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
+function createUser(
+    string $name,
+    string $email,
+    string $password,
+    string $birthday,
+    string $phone,
+    Gender $gender
+) {
+    global $connection;
+    $sql = "INSERT INTO users (name, email, password, birthday, phone, gender) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $connection->prepare($sql);
+    $genderValue = $gender->value; // เก็บใส่ตัวแปรก่อน
+    $stmt->bind_param(
+        "ssssss",
+        $name,
+        $email,
+        password_hash($password, PASSWORD_DEFAULT),
+        $birthday,
+        $phone,
+        $genderValue
+    );
+    return $stmt->execute();
+}
 
-        if ($user && password_verify($password, $user['password'])) {
-            return $user;
-        }
-        return false;
+function getUserProfileDetails($userId)
+{
+    global $connection;
+    $sql = "SELECT name, email, birthday, phone, gender FROM users WHERE user_id = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
+    if ($row) {
+        return $row;
     }
+    return null;
+}
 
-    function createUser(
-        string $name,
-        string $email, 
-        string $password, 
-        string $birthday, 
-        string $phone, 
-        Gender $gender
-    )
-    {
-        global $connection;
-        $sql = "INSERT INTO users (name, email, password, birthday, phone, gender) VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $connection->prepare($sql);
-        $genderValue = $gender->value; // เก็บใส่ตัวแปรก่อน
-        $stmt->bind_param("ssssss",
-                            $name,
-                            $email,
-                            password_hash($password, PASSWORD_DEFAULT),
-                            $birthday,
-                            $phone,
-                            $genderValue
-                        );
-        return $stmt->execute();
-    }
+function getUsernameById($userId)
+{
+    global $connection;
+    $sql = "SELECT name FROM users WHERE user_id = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_assoc()['name'] ?? null;
+}
 
-    function getUserProfileDetails($userId) 
-    {
-        global $connection;
-        $sql = "SELECT name, email, birthday, phone, gender FROM users WHERE user_id = ?";
-        $stmt = $connection->prepare($sql);
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        $row = $stmt->get_result()->fetch_assoc();
-        if ($row) {
-            return $row;
-        }
-        return null;
-    }
+function updatePassword(int $userId, string $newPassword)
+{
+    global $connection;
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+    $sql = "UPDATE users SET password = ? WHERE user_id = ?";
+    $stmt = $connection->prepare($sql);
 
-    function getUsernameById($userId) {
-        global $connection;
-        $sql = "SELECT name FROM users WHERE user_id = ?";
-        $stmt = $connection->prepare($sql);
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_assoc()['name'] ?? null;
-    }
-
-    function updatePassword(int $userId, string $newPassword) 
-    {
-        global $connection;
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $sql = "UPDATE users SET password = ? WHERE user_id = ?";
-        $stmt = $connection->prepare($sql);
-        
-        $stmt->bind_param("si", $hashedPassword, $userId);
-        return $stmt->execute();
-    }
-
+    $stmt->bind_param("si", $hashedPassword, $userId);
+    return $stmt->execute();
+}

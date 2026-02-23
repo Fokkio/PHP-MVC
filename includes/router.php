@@ -84,22 +84,28 @@ function dispatch(string $uri, string $method): void
 {
     $uri    = normalizeUri($uri);
     $method = strtoupper($method);
-
-    if (!in_array($method, ALLOW_METHODS, true)) {
-        notFound();
-    }
-
-    // 🔐 Auth Check
-    if (!isPublicRoute($uri) && !isset($_SESSION['user_id'])) {
-        header('Location: /users/login');
-        exit;
-    }
-
+    
     $route = resolveRoute($uri);
 
     if (!$route) {
         notFound();
     }
+
+    if (!in_array($method, ALLOW_METHODS, true)) {
+        notFound();
+    }
+
+    $currentRoutePath = $route['scope'] . '/' .$route['action'];
+
+    if($uri === ' '){$currentRoutePath = '';}
+
+    // 🔐 Auth Check
+    if (!isPublicRoute($currentRoutePath) && !isset($_SESSION['user_id'])) {
+        header('Location: /events');
+        exit;
+    }
+
+   
 
     ['scope' => $scope, 'action' => $action, 'id' => $id] = $route;
 
@@ -118,7 +124,7 @@ function dispatch(string $uri, string $method): void
         'action' => $action,
     ];
 
-    var_dump($context); // Debug: ดู context ที่ส่งไป
+    /* var_dump($context); // Debug: ดู context ที่ส่งไป */
 
     require $file; // ไฟล์รับ $context แล้วทำงานได้เลย
 }

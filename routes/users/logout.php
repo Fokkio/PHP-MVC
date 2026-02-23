@@ -1,5 +1,5 @@
 <?php
     session_unset();
     session_destroy();
-    header('Location: /events');
+    header('Location: /users/login');
     exit();

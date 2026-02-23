@@ -18,7 +18,13 @@ $connection = db_connect();
 
 // ลบ require controller ออกทั้งหมด router จัดการเอง
 
-const PUBLIC_ROUTES  = ['', 'users/login', 'users/register', 'events'];
+const PUBLIC_ROUTES = [
+    '',               // เผื่อไว้สำหรับหน้าแรกสุด
+    'events/index',   // สำคัญมาก! เพราะหน้าแรกถูก resolve เป็นตัวนี้
+    'events/detail',  // หน้าที่คุณต้องการให้คนนอกดูได้
+    'users/login',
+    'users/register'
+];
 const ALLOW_METHODS  = ['GET', 'POST'];
 
 dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
